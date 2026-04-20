@@ -12,6 +12,9 @@ Gnome 50 dropped support for X11.  Some of us want to keep using X11 on Arch wit
 1. Set up some kind of container build tool.  We'll use `podman` in our examples.
 1. Clone this repo.
 1. Open a terminal and `cd` to where you cloned the repo.
+1. Create an `output` directory and make it writable:
+1. `mkdir output`
+1. `chmod 0777 output`
 1. `podman build -v /some/local/path/for/output:/output . -t gnome49`
 1. Now install the resulting packages: `cd output && sudo pacman -U $(ls | grep zst | grep -v debug)`
 
