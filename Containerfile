@@ -20,7 +20,7 @@ run sudo locale-gen --purge C.UTF-8 en_CA.UTF-8 en_US.UTF-8
 run sudo sh -c "echo 1j90rjffnu9wfej012j812e1r2nm08j8 > /etc/machine-id"
 
 # xterm-256color fixes some tests in malcontent which expect emojis 
-ENV TERM xterm-256color
+env TERM xterm-256color
 
 workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https accountsservice

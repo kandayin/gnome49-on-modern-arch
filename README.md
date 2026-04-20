@@ -5,7 +5,7 @@ This is a work-in-progress.  It is not yet complete.  That said, it is working o
 
 ## Background
 
-Gnome 50 dropped support for X11.  Some of us want to keep using X11 on Arch with Gnome.  Since Arch is a rolling release, there's no way to keep your system secure via updates AND run Gnome + X11 anymore.  This repo attempts to bridge that.
+Gnome 50 dropped support for X11.  Some of us want to keep using X11 on Arch with Gnome.  Since Arch is a rolling release, there's no way to keep your system secure via updates AND run Gnome + X11 anymore.  This repo attempts to bridge that by downgrading Gnome to version 49 while building against modern updated packages.
 
 ## How to
 
