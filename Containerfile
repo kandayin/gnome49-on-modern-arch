@@ -6,6 +6,9 @@ run pacman -Syu --noconfirm
 
 run pacman -S --noconfirm --needed base-devel git cargo devtools cmake
 
+# ensure that we don't install pre-built versions of the packages we build
+run sed -i 's/#IgnorePkg   =/IgnorePkg = tecla mutter gnome-shell gnome-session gnome-text-editor gnome-remote-desktop gnome-control-center accountsservice malcontent adwaita-cursors adwaita-icon-theme gnome-settings-daemon gnome-user-docs xdg-desktop-portal-gnome/' /etc/pacman.conf
+
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
 user localuser
@@ -18,6 +21,14 @@ run sudo sh -c 'printf "C.UTF-8 UTF-8\nen_CA.UTF-8 UTF-8\nen_US.UTF-8 UTF-8\n" >
 run sudo locale-gen --purge C.UTF-8 en_CA.UTF-8 en_US.UTF-8
 
 run sudo sh -c "echo 1j90rjffnu9wfej012j812e1r2nm08j8 > /etc/machine-id"
+
+# adwaita-cursors is also built via adwaita-icon-theme
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https adwaita-icon-theme
+workdir /home/localuser/pkgctl/adwaita-icon-theme
+run git checkout 49.0-1
+run makepkg -sif --noconfirm
+run mv *.zst /output/
 
 # xterm-256color fixes some tests in malcontent which expect emojis 
 env TERM xterm-256color
@@ -66,12 +77,25 @@ run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -sif --noconfirm
 run mv *.zst /output/
 
-env PKG_CONFIG_PATH /usr/lib/pkgconfig:/usr/share/pkgconfig
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https gnome-remote-desktop
+workdir /home/localuser/pkgctl/gnome-remote-desktop
+run git checkout 49.3-1
+run makepkg -sif --noconfirm
+run mv *.zst /output/
 
 workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https gnome-shell
 workdir /home/localuser/pkgctl/gnome-shell
 run git checkout 1-49.5-1
+run makepkg -sif --noconfirm
+run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https gnome-control-center
+workdir /home/localuser/pkgctl/gnome-control-center
+run git checkout 49.6-1
+run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -sif --noconfirm
 run mv *.zst /output/
 
@@ -84,16 +108,26 @@ run makepkg -sif --noconfirm
 run mv *.zst /output/
 
 workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https gnome-remote-desktop
-workdir /home/localuser/pkgctl/gnome-remote-desktop
-run git checkout 49.3-1
+run pkgctl repo clone --protocol=https xdg-desktop-portal-gnome
+workdir /home/localuser/pkgctl/xdg-desktop-portal-gnome
+run git checkout 49.0-1
+run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -sif --noconfirm
 run mv *.zst /output/
 
 workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https gnome-control-center
-workdir /home/localuser/pkgctl/gnome-control-center
-run git checkout 49.6-1
+run pkgctl repo clone --protocol=https gnome-user-docs
+workdir /home/localuser/pkgctl/gnome-user-docs
+run git checkout 49.4-1
 run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -sif --noconfirm
+run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https gnome-settings-daemon
+workdir /home/localuser/pkgctl/gnome-settings-daemon
+run git checkout 49.1-1
+run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
+# --nocheck because these tests don't work well in a container
+run makepkg --nocheck -sif --noconfirm
 run mv *.zst /output/
