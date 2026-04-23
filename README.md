@@ -19,3 +19,7 @@ Gnome 50 dropped support for X11.  Some of us want to keep using X11 on Arch wit
 1. Now install the resulting packages: `cd output && sudo pacman -U $(ls | grep zst | grep -v debug)`
 
 **NOTE**: You will need to re-run the last step every time you `pacman -Suy` your system, because it will upgrade them again.  But this will get you an up-to-date system with Gnome 49.
+
+## Debugging
+
+If you get build errors, try adding `--no-cache` after `podman build` before the rest of the flags.
