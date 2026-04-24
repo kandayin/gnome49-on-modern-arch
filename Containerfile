@@ -7,7 +7,7 @@ run pacman -Syu --noconfirm
 run pacman -S --noconfirm --needed base-devel git cargo devtools
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = accountsservice adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs malcontent mutter nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs mutter nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
@@ -39,18 +39,6 @@ run mv *.zst /output/
 
 # xterm-256color fixes some tests in malcontent which expect emojis 
 env TERM xterm-256color
-
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https accountsservice
-workdir /home/localuser/pkgctl/accountsservice
-run makepkg -si --noconfirm
-run mv *.zst /output/
-
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https malcontent
-workdir /home/localuser/pkgctl/malcontent
-run makepkg -si --noconfirm
-run mv *.zst /output/
 
 workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https tecla
