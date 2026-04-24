@@ -7,7 +7,7 @@ run pacman -Syu --noconfirm
 run pacman -S --noconfirm --needed base-devel git cargo devtools
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs mutter nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
