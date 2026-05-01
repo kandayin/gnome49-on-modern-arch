@@ -4,7 +4,7 @@ run pacman -Sy --noconfirm --needed archlinux-keyring base-devel git cargo devto
 run pacman-key --init
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs librsvg mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
@@ -19,6 +19,33 @@ run sudo locale-gen --purge C.UTF-8 en_CA.UTF-8 en_US.UTF-8
 
 run sudo sh -c "echo 1j90rjffnu9wfej012j812e1r2nm08j8 > /etc/machine-id"
 
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https adwaita-fonts
+workdir /home/localuser/pkgctl/adwaita-fonts
+run git checkout 49.0-2
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https gdk-pixbuf2
+workdir /home/localuser/pkgctl/gdk-pixbuf2
+run sudo pacman -S shared-mime-info cmake glycin librsvg --noconfirm
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
+#workdir /home/localuser/pkgctl
+#run pkgctl repo clone --protocol=https glycin
+#workdir /home/localuser/pkgctl/glycin
+#run makepkg -si --noconfirm
+#run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https librsvg
+workdir /home/localuser/pkgctl/librsvg
+run sudo pacman -S --noconfirm cargo-c cmake cairo dav1d --nodeps
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
 # adwaita-cursors is also built via adwaita-icon-theme
 workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https adwaita-icon-theme
@@ -27,12 +54,6 @@ run git checkout 49.0-1
 run makepkg -si --noconfirm
 run mv *.zst /output/
 
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https adwaita-fonts
-workdir /home/localuser/pkgctl/adwaita-fonts
-run git checkout 49.0-2
-run makepkg -si --noconfirm
-run mv *.zst /output/
 
 # xterm-256color fixes some tests in malcontent which expect emojis 
 env TERM xterm-256color
@@ -150,6 +171,14 @@ workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https gnome-system-monitor
 workdir /home/localuser/pkgctl/gnome-system-monitor
 run git checkout 49.1-1
+run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https freerdp
+workdir /home/localuser/pkgctl/freerdp
+run git checkout 2-3.24.2-1
 run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -si --noconfirm
 run mv *.zst /output/
