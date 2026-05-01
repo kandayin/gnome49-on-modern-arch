@@ -4,7 +4,7 @@ run pacman -Sy --noconfirm --needed archlinux-keyring base-devel git cargo devto
 run pacman-key --init
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs librsvg mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
@@ -23,26 +23,6 @@ workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https adwaita-fonts
 workdir /home/localuser/pkgctl/adwaita-fonts
 run git checkout 49.0-2
-run makepkg -si --noconfirm
-run mv *.zst /output/
-
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https gdk-pixbuf2
-workdir /home/localuser/pkgctl/gdk-pixbuf2
-run sudo pacman -S shared-mime-info cmake glycin librsvg --noconfirm
-run makepkg -si --noconfirm
-run mv *.zst /output/
-
-#workdir /home/localuser/pkgctl
-#run pkgctl repo clone --protocol=https glycin
-#workdir /home/localuser/pkgctl/glycin
-#run makepkg -si --noconfirm
-#run mv *.zst /output/
-
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https librsvg
-workdir /home/localuser/pkgctl/librsvg
-run sudo pacman -S --noconfirm cargo-c cmake cairo dav1d --nodeps
 run makepkg -si --noconfirm
 run mv *.zst /output/
 
