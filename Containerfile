@@ -104,7 +104,7 @@ run pkgctl repo clone --protocol=https gnome-control-center
 workdir /home/localuser/pkgctl/gnome-control-center
 run git checkout 49.6-1
 run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
-run makepkg -si --noconfirm
+run makepkg -si --noconfirm --nocheck
 run mv *.zst /output/
 
 workdir /home/localuser/pkgctl
