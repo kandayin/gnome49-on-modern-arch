@@ -4,7 +4,7 @@ run pacman -Sy --noconfirm --needed archlinux-keyring base-devel git cargo devto
 run pacman-key --init
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany evolution-data-server freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libgdm libical libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
@@ -89,6 +89,20 @@ workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https gnome-remote-desktop
 workdir /home/localuser/pkgctl/gnome-remote-desktop
 run git checkout 49.3-1
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https libical
+workdir /home/localuser/pkgctl/libical
+run git checkout 3.0.20-3
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
+# evolution-data-server provides libecal which needs to be built against libical 3.x for gnome-shell 49 to build
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https evolution-data-server
+workdir /home/localuser/pkgctl/evolution-data-server
 run makepkg -si --noconfirm
 run mv *.zst /output/
 
