@@ -26,6 +26,14 @@ run git checkout 49.0-2
 run makepkg -si --noconfirm
 run mv *.zst /output/
 
+# our mutter needs this pango
+workdir /home/localuser/pkgctl
+run pkgctl repo clone --protocol=https pango
+workdir /home/localuser/pkgctl/pango
+run git checkout 1-1.57.1-1
+run makepkg -si --noconfirm
+run mv *.zst /output/
+
 # adwaita-cursors is also built via adwaita-icon-theme
 workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https adwaita-icon-theme
