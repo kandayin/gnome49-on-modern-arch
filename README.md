@@ -1,7 +1,7 @@
 # Gnome 49 on Modern Arch Linux
 
 ## Note
-This is a work-in-progress.  It is not yet complete.  That said, it is working on my machine on 2026-07-31.
+This is a work-in-progress.  It is not yet complete.  That said, it is working on my machine on 2026-08-11.
 
 ## Background
 

@@ -4,7 +4,7 @@ run pacman -Sy --noconfirm --needed archlinux-keyring base-devel git cargo devto
 run pacman-key --init
 
 # ensure that we don't install pre-built versions of the packages we build
-run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany evolution-data-server freerdp gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libedataserverui4 libgdm libical libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
+run sed -i 's/#IgnorePkg   =/IgnorePkg = adwaita-cursors adwaita-fonts adwaita-icon-theme epiphany evolution-data-server gdm gnome-backgrounds gnome-calendar gnome-connections gnome-control-center gnome-font-viewer gnome-keybindings gnome-remote-desktop gnome-session gnome-settings-daemon gnome-shell gnome-shell-docs gnome-shell-extensions gnome-software gnome-system-monitor gnome-text-editor gnome-user-docs libedataserverui4 libgdm libical libnautilus-extension libnautilus-extension-docs mutter mutter-devkit mutter-docs nautilus tecla xdg-desktop-portal-gnome/' /etc/pacman.conf
 
 run useradd -m localuser
 run echo "localuser ALL=NOPASSWD: ALL" > /etc/sudoers.d/localuser
@@ -173,14 +173,6 @@ workdir /home/localuser/pkgctl
 run pkgctl repo clone --protocol=https gnome-system-monitor
 workdir /home/localuser/pkgctl/gnome-system-monitor
 run git checkout 49.1-1
-run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
-run makepkg -si --noconfirm
-run mv *.zst /output/
-
-workdir /home/localuser/pkgctl
-run pkgctl repo clone --protocol=https freerdp
-workdir /home/localuser/pkgctl/freerdp
-run git checkout 2-3.24.2-1
 run sed -i 's/local meson_options=(/local meson_options=( -D x11=true/' PKGBUILD
 run makepkg -si --noconfirm
 run mv *.zst /output/
